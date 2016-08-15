@@ -196,7 +196,7 @@ object Main extends App {
 
       if (realTime) {
         val now = LocalDateTime.now()
-        val dif = Duration.between(now, clock)
+        val dif = Duration.between(clock, now)
         if (dif.isNegative)
           Thread.sleep(-dif.getSeconds)
       }
