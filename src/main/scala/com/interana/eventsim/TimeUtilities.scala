@@ -5,7 +5,7 @@ import java.time.{DayOfWeek, Duration, LocalDateTime, LocalDate}
 
 import com.interana.eventsim.Constants._
 import com.interana.eventsim.config.ConfigFromFile
-import de.jollyday.HolidayManager
+//import de.jollyday.HolidayManager
 import org.apache.commons.math3.random.MersenneTwister
 
 object TimeUtilities {
@@ -13,8 +13,9 @@ object TimeUtilities {
   // def dateTimeToLocalDate(dt: Instant): LocalDate = LocalDate.from(Instant.ofEpochMilli(dt.getMillis()))
 
   // first implementation: US only
-  val holidays = HolidayManager.getInstance()
-  def isHoliday(ld: LocalDate): Boolean = holidays.isHoliday(ld)
+  // val holidays = HolidayManager.getInstance()
+  // def isHoliday(ld: LocalDate): Boolean = holidays.isHoliday(ld)
+  def isHoliday(ld: LocalDate): Boolean = false
 
   def isWeekend(ld: LocalDate): Boolean = {
     val dow = ld.getDayOfWeek
