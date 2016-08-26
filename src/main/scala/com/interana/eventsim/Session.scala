@@ -3,7 +3,7 @@ package com.interana.eventsim
 import java.time.LocalDateTime
 
 import com.interana.eventsim.TimeUtilities._
-import com.interana.eventsim.buildin.RandomSongGenerator
+import com.interana.eventsim.buildin.{RandomHashtagGenerator, RandomSongGenerator}
 import com.interana.eventsim.config.ConfigFromFile
 
 /**
@@ -20,6 +20,8 @@ class Session(var nextEventTimeStamp: Option[LocalDateTime],
   var itemInSession = 0
   var done = false
   var currentState:State = initialStates((auth, level)).randomThing
+  var currentHashtag:Option[(String)] =
+    if (currentState.page=="NewTweet") Some(RandomHashtagGenerator.randomThing) else None
   var currentSong:Option[(String,String,String,Double)] =
     if (currentState.page=="NextSong") Some(RandomSongGenerator.nextSong()) else None
   var currentSongEnd:Option[LocalDateTime] =
@@ -47,6 +49,12 @@ class Session(var nextEventTimeStamp: Option[LocalDateTime],
           currentSong = Some(RandomSongGenerator.nextSong(currentSong.get._1))
         }
         currentSongEnd = Some(nextEventTimeStamp.get.plusSeconds(currentSong.get._4.toInt))
+        currentState = nextState.get
+        itemInSession += 1
+
+      case x if x.get.page=="NewTweet" =>
+        currentHashtag = Some(RandomHashtagGenerator.randomThing)
+        nextEventTimeStamp=Some(nextEventTimeStamp.get.plusSeconds(exponentialRandomValue(alpha).toInt))
         currentState = nextState.get
         itemInSession += 1
 

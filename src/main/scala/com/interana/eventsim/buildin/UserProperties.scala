@@ -21,13 +21,13 @@ object UserProperties {
       "lastName" -> RandomLastNameGenerator.randomThing,
       "firstName" -> firstNameAndGender._1,
       "gender" -> firstNameAndGender._2,
-      "registration" -> registrationTime.toInstant(ZoneOffset.UTC).toEpochMilli,
+      "registration" -> registrationTime.toInstant(ZoneOffset.UTC).toEpochMilli/1000,
       "location" -> location,
       "userAgent" -> RandomUserAgentGenerator.randomThing._1
     )
   }
 
   def randomNewProps(dt: LocalDateTime) =
-    randomProps + ("registration" -> dt.toInstant(ZoneOffset.UTC).toEpochMilli)
+    randomProps + ("registration" -> dt.toInstant(ZoneOffset.UTC).toEpochMilli/1000)
 
 }

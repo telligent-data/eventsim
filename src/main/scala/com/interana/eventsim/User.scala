@@ -89,7 +89,7 @@ class User(val alpha: Double,
     // (earlier versions used Scala's std JSON generators, but they were slow)
     val showUserDetails = ConfigFromFile.showUserWithState(session.currentState.auth)
     writer.writeStartObject()
-    writer.writeNumberField("ts", session.nextEventTimeStamp.get.toInstant(ZoneOffset.UTC)toEpochMilli())
+    writer.writeNumberField("ts", (session.nextEventTimeStamp.get.toInstant(ZoneOffset.UTC)toEpochMilli())/1000)
     writer.writeStringField("userId", if (showUserDetails) userId.toString else "")
     writer.writeNumberField("sessionId", session.sessionId)
     writer.writeStringField("page", session.currentState.page)
@@ -115,6 +115,9 @@ class User(val alpha: Double,
       writer.writeStringField("artist", session.currentSong.get._2)
       writer.writeStringField("song",  session.currentSong.get._3)
       writer.writeNumberField("length", session.currentSong.get._4)
+    }
+    if (session.currentState.page=="NewTweet") {
+      writer.writeStringField("hashtag", session.currentHashtag.get)
     }
     writer.writeEndObject()
     writer.writeRaw('\n')
